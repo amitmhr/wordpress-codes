@@ -1,0 +1,73 @@
+*) Custom post type function
+
+function create_posttype() {
+
+	register_post_type( 'movies',
+	// CPT Options
+	array(
+	'labels' => array(
+	'name' => __( 'Movies' ),
+	'singular_name' => __( 'Movie' )
+	),
+	'public' => true,
+	'has_archive' => true,
+	'rewrite' => array('slug' => 'movies'),
+	'show_in_rest' => true,
+	)
+);
+}
+// Hooking up our function to theme setup
+add_action( 'init', 'create_posttype' );
+
+==================================================
+
+*) Custom Template for Page and Post
+
+<?php
+/**
+ * Template Name: Full Width Template
+ * Template Post Type: post, page
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twenty
+ * @since Twenty Twenty 1.0
+ */
+
+get_template_part( 'singular' );
+
+==================================================
+
+*) Create Admin Menu
+
+/**
+ * Create admin Page to Leads.
+ */
+ // Hook for adding admin menus
+add_action('admin_menu', 'all_leads');
+ // action function for above hook
+ 
+/**
+ * Adds a new top-level page to the administration menu.
+ */
+function all_leads(){
+    add_menu_page(
+    	'My Page Title',
+    	'Leads',
+    	'manage_options',
+    	'my-menu',
+    	'my_menu_output',
+    	'dashicons-welcome-view-site',
+    	26
+    );
+}
+/**
+ * Disply callback for the Unsub page.
+ */
+function my_menu_output(){
+	require_once( get_stylesheet_directory() . '/include/geobizops_leads.php');
+}
+
+=======================================================================================
+
+*) Create
+
