@@ -1,4 +1,19 @@
+*) Custom Template for Page and Post
+-------------------------------------
+<?php
+/**
+ * Template Name: Full Width Template
+ * Template Post Type: post, page, custom-post
+ *
+ * @package WordPress
+ * @subpackage Twenty_Twenty
+ * @since Twenty Twenty 1.0
+ */
+
+====================================================
+
 *) Custom post type function
+-----------------------------
 
 function create_posttype() {
 
@@ -19,25 +34,11 @@ function create_posttype() {
 // Hooking up our function to theme setup
 add_action( 'init', 'create_posttype' );
 
-==================================================
-
-*) Custom Template for Page and Post
-
-<?php
-/**
- * Template Name: Full Width Template
- * Template Post Type: post, page
- *
- * @package WordPress
- * @subpackage Twenty_Twenty
- * @since Twenty Twenty 1.0
- */
-
-get_template_part( 'singular' );
 
 ==================================================
 
 *) Create Admin Menu
+--------------------
 
 /**
  * Create admin Page to Leads.
@@ -69,5 +70,5 @@ function my_menu_output(){
 
 =======================================================================================
 
-*) Create
+*) Create 
 

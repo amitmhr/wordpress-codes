@@ -1,0 +1,61 @@
+// Show data from database table
+
+	global $wpdb;
+
+	$result = $wpdb->get_results( "SELECT * FROM wp_users");
+	if (!empty($result)) {
+		foreach($result as $users) {
+			echo $users->display_name;
+		}
+	}
+==================================================================
+
+
+// Insert Query 
+$data = array(
+    'from' => $user1,
+    'with' => $user2,
+    'type' => aone_msg_get_data($args,'type',''),
+    'targetid' => aone_msg_get_data($args,'targetid',0),
+    'msgbody' => $formattedmsg,
+                            
+    );
+}
+			
+$wpdb->insert('aone_messages',wp_unslash($data));
+
+// Update Query
+$data = array(
+	'msgbody' => $formattedmsg.$row->msgbody,
+);
+$where = array(
+	'id' => $row->id,
+);			
+$a = $wpdb->update('aone_messages',wp_unslash($data),$where);
+
+Ger Single Row
+$row = $wpdb->get_row($wpdb->prepare('SELECT * FROM `aone_messages` WHERE `from` = %d AND `with` = %d AND `type` = ""',$currentuserid,$withid));	
+if(!empty($row)){
+
+}
+
+// get result array
+$results = $wpdb->get_results($wpdb->prepare('SELECT * FROM `aone_messages` WHERE `with` = %d AND `status` = "unread" AND `type` = ""',$current_user->ID));
+		if(!empty($results)){
+			return count($results);
+		}
+		
+	}
+    
+    
+    
+    $message = "Hello %JOBTITLE%    you are good %MESSAGE% ";
+$tokens = array('%JOBTITLE%','%MESSAGE%','%LINK%');
+$targetid = 'my job posting';
+$link = 'facebook.com';
+$link = 'facebook.com';
+$maileditorcontent = 'Lorem Ipsum';
+		$replacements = array($targetid,$maileditorcontent,'<a href="'.$link.'">'.$link.'</a>');
+		$mail_body = str_replace($tokens,$replacements,$message);
+		
+		echo $mail_body;
