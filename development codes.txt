@@ -10,7 +10,7 @@
  * @since Twenty Twenty 1.0
  */
 
-====================================================
+=======================================================================================
 
 *) Custom post type function
 -----------------------------
@@ -35,7 +35,7 @@ function create_posttype() {
 add_action( 'init', 'create_posttype' );
 
 
-==================================================
+=======================================================================================
 
 *) Create Admin Menu
 --------------------
@@ -70,5 +70,80 @@ function my_menu_output(){
 
 =======================================================================================
 
-*) Create 
+*) Disable Comments for Media Attachments
+------------------------------------------
+function filter_media_comment_status( $open, $post_id ) {
+$post = get_post( $post_id );
+if( $post->post_type == ‘attachment’ ) {
+return false;
+}
+return $open;
+}
+add_filter( ‘comments_open’, ‘filter_media_comment_status’, 10 , 2 );
 
+=======================================================================================
+
+*) Show in template file name in footer
+---------------------------------------
+add_action('wp_footer', 'method');
+function method()
+{
+$template_file = get_post_meta( get_the_ID(), '_wp_page_template', TRUE );
+echo $template_file;
+}
+
+=======================================================================================
+
+*) Make Shortcode
+------------------
+
+// function that runs when shortcode is called
+function wpb_demo_shortcode() {  
+	$message = 'Hello world!'; 
+
+	return $message;
+} 
+// register shortcode
+add_shortcode('greeting', 'wpb_demo_shortcode');
+
+*) How to call shortcode.
+-------------------------
+
+echo do_shortcode('[CONTACT-US-FORM]');
+
+=======================================================================================
+
+*) Child theme
+--------------------
+
+/*
+ Theme Name:   Twenty Twenty Child
+ Theme URI:    http://studio.cridio.com/listingpro/
+ Description:  Listingpro Child Theme
+ Author:       cridio team
+ Author URI:   http://cridio.com/
+ Template:     TwentyTwenty
+ Version:      1.0.0
+ Tags:         listingpro, directory, listing, right-sidebar, responsive-layout, accessibility-ready
+ Text Domain:  listingpro
+*/
+
+=======================================================================================
+
+*) Add Script in footer
+-------------------------
+
+add_action('wp_footer', 'my_admin_footer_function');
+function my_admin_footer_function($data) {
+
+    if ( is_single() ) { ?>
+        <script>
+            if(document.getElementsByClassName("available-on-backorder")){
+                alert("Element exists");
+            } else {
+                alert("Element does not exist");
+            }
+        </script>
+        <?php
+    }
+}
