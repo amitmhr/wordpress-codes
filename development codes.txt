@@ -130,7 +130,7 @@ echo do_shortcode('[CONTACT-US-FORM]');
 
 =======================================================================================
 
-*) Add Script in footer
+*) Add Script in footer (page, post)
 -------------------------
 
 add_action('wp_footer', 'my_admin_footer_function');
@@ -147,3 +147,137 @@ function my_admin_footer_function($data) {
         <?php
     }
 }
+
+=======================================================================================
+
+*) Hook For add code on header login page
+-----------------------------------------
+
+/** Hook For add code on login page **/
+
+add_action('login_head', 'the_dramatist_custom_login_css');
+function the_dramatist_custom_login_css() {
+echo '<style type="text/css">
+		.login h1 a{
+    		display: none !important;
+    	}
+      </style>';
+}
+
+=======================================================================================
+
+*) Hook For add code on footer login page
+-----------------------------------------
+
+add_action('login_footer', 'the_dramatist_custom_login_csss');
+function the_dramatist_custom_login_csss() {
+echo '<script>
+		alert("d");
+      </script>';
+}
+
+=======================================================================================
+
+*) Get current template file name
+-----------------------------------------
+
+add_action('wp_footer', function(){
+    global $template;
+    print_r($template);
+});
+
+
+=======================================================================================
+
+*) For w3validation (Removes 'type="text/javascript"')
+-----------------------------------------
+
+#one for JS mime-type
+add_action( 'template_redirect', function(){
+  ob_start( function( $buffer ){
+       $buffer = str_replace( array( 'type="text/javascript"', "type='text/javascript'" ), '', $buffer );        
+       return $buffer;
+    });
+});
+#one for CSS-Mime-Type
+add_action( 'template_redirect', function(){
+    ob_start( function( $buffer ){
+        $buffer = str_replace( array( 'type="text/css"', "type='text/css'" ), '', $buffer );        
+        return $buffer;
+    });
+});
+
+=======================================================================================
+
+*) Show all custom posts on a single page
+-----------------------------------------
+
+$args = array(
+    
+    'posts_per_page' => -1,
+    'post_type' => 'custom_post_type',
+    'orderby' => 'title,'
+);
+
+$products = new WP_Query( $args );
+
+while ( $products->have_posts() ) {
+        
+        $products->the_post();
+
+        $id             = get_the_ID();
+        $name           = get_the_title();
+
+    }
+
+=======================================================================================
+
+*) Change the perticular text
+-----------------------------------------
+
+function um_rename_messagetxt1( $translated_text, $text, $text_domain ) {
+    if ( 'Shipping Costs' === $text ) {
+    $translated_text = 'zzgl. Versandkosten';
+    }
+    return $translated_text;
+}
+
+add_filter ( 'gettext', 'um_rename_messagetxt1', 10, 3);
+
+=======================================================================================
+
+*) preload error
+-----------------------------------------
+<link rel="preload" href="style.css" as="style">
+    <link rel="preload" href="main.js" as="script">
+
+
+    <link rel="preload" href="https://relaunch.fratzhosen.de/wp-content/themes/flatsome/assets/css/icons/fl-icons.woff2" as="font" crossorigin="anonymous">
+
+<link rel="preload" href="https://relaunch.fratzhosen.de/wp-content/plugins/waitlist-woocommerce/assets/fonts/waitlist.ttf?gwad77" as="font" crossorigin="anonymous">
+
+
+=======================================================================================
+
+*) Get the taxonomy of a product
+-----------------------------------------
+
+global $post;
+                    $args = array( 'taxonomy' => 'berocket_brand',);
+                    $terms = wp_get_post_terms($post->ID,'berocket_brand', $args);
+
+                    $count = count($terms); 
+                    if ($count > 0) {
+
+                    foreach ($terms as $term) {
+
+                        $term_vals = get_term_meta($term->term_id);
+                        $img_url = $term_vals['brand_image_url'][0];
+
+                        echo '<div class="b-logo">'; ?>
+                        <a href="<?php echo get_term_link( $term->term_id, 'berocket_brand');?>">
+                        <img src="<?php echo $img_url; ?>" width="70%"><br>
+                        </a>
+                        <?php
+                        echo '</div>';
+                    }
